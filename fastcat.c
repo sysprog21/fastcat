@@ -36,16 +36,15 @@ int main(int argc, char **argv)
         /* In some cases, stdout can have O_APPEND set but not be pointing
          * to a particular file.
          * FIXME: It is not safe to remove O_APPEND when STDOUT_FILENO is not
-         * a tty. We should not overwrite files.
-         * FIXME: Add isatty(STDOUT_FILENO)
+         *        a tty. We should not overwrite files. That is, we have to
+         *        add "&& isatty(STDOUT_FILENO)" for the above if-statement.
          */
         remove_append(STDOUT_FILENO);
     }
 
-    /*
-     * Neither splice nor sendfile support file descriptors with
-     * O_APPEND. Either removing O_APPEND failed or we're not redirected to a
-     * tty.
+    /* Neither splice nor sendfile support file descriptors with
+     * O_APPEND. Either removing O_APPEND failed or we're not redirected to
+     * a tty.
      */
     if (stdout_append()) {
         fprintf(stderr, "Unable to append to files.\n");
@@ -77,8 +76,7 @@ int main(int argc, char **argv)
         }
     }
 
-    /*
-     * Copy the files to stdout. Close the files when done. Exit with a
+    /* Copy the files to stdout. Close the files when done. Exit with a
      * non-zero status on error.
      */
     for (int i = 0; i < num_files; i++) {
