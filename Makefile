@@ -15,16 +15,18 @@ clean:
 	$(RM) fastcat simple out
 
 distclean: clean
-	$(RM) 100-0.txt
+	$(RM) 100-0.txt 100-0.txt.md5
 
-100-0.txt: 
-	wget --quiet http://www.gutenberg.org/files/100/100-0.txt
-	md5sum $@
+100-0.txt:
+	@echo "Downloading the complete works of William Shakespeare..."
+	@wget --quiet http://www.gutenberg.org/files/100/100-0.txt
+	@md5sum $@ > $@.md5
 
 check: $(EXE) 100-0.txt
 	@$(RM) out
 	@./fastcat 100-0.txt > out
 	@diff 100-0.txt out
+	@./fastcat 100-0.txt | md5sum --status -c 100-0.txt.md5
 	@echo "OK!"
 
 bench: $(EXE) simple 100-0.txt
