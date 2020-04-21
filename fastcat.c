@@ -60,12 +60,9 @@ int main(int argc, char **argv)
         char *in_filename = argv[i + 1];
         fds[i] = open(in_filename, O_RDONLY);
         if (fds[i] < 0) {
+            fprintf(stderr, "Unable to open %s.\n", in_filename);
             if (errno == ENOENT)
-                fprintf(stderr, "Unable to open %s. File does not exist.\n",
-                        in_filename);
-            else
-                fprintf(stderr, "Unable to open %s.\n", in_filename);
-
+                fprintf(stderr, "File does not exist.\n");
             return EXIT_FAILURE;
         }
 
