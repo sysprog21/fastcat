@@ -12,6 +12,14 @@ $ fastcat FILE >> OUT
 ```
 is not supported as neither `splice` nor `sendfile` support appending to files.
 
+## Benchmarking
+
+[bench](https://hackage.haskell.org/package/bench) is a powerful alternative to the time command,
+and `fastcat` uses it for benchmarking.
+```shell
+$ make bench
+```
+
 ## License
 `fastcat` is released under the MIT License. Use of this source code is governed
 by a MIT License that can be found in the LICENSE file.
