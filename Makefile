@@ -30,8 +30,14 @@ check: $(EXE) 100-0.txt
 	@echo "OK!"
 
 bench: $(EXE) simple 100-0.txt
-	bench './simple 100-0.txt'
-	bench 'cat 100-0.txt'
-	bench './fastcat 100-0.txt'
+	@printf "simple: "
+	@./simple simple 100-0.txt | pv -r > /dev/null
+	@bench './simple 100-0.txt'
+	@printf "cat from coreutils: "
+	@cat simple 100-0.txt | pv -r > /dev/null
+	@bench 'cat 100-0.txt'
+	@printf "fastcat: "
+	@./fastcat simple 100-0.txt | pv -r > /dev/null
+	@bench './fastcat 100-0.txt'
 
 .PHONY: clean
